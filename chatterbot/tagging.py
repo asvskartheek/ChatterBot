@@ -22,8 +22,12 @@ class PosLemmaTagger(object):
         self.language = language or languages.ENG
 
         self.punctuation_table = str.maketrans(dict.fromkeys(string.punctuation))
-
-        self.nlp = spacy.load(self.language.ISO_639_1.lower())
+        
+        # Fix Issue with Spacy v3.0
+        if self.language.ISO_639_1.lower() == 'en':
+            self.nlp = spacy.load('en_core_web_sm')
+        else:
+            self.nlp = spacy.load(self.language.ISO_639_1.lower())
 
     def get_text_index_string(self, text):
         """
